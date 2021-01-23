@@ -1,95 +1,105 @@
 <!DOCTYPE html>
 <html lang="pt">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DCC138 Exemplo01</title>
-  </head>
+</head>
 
-  <body>
+<body>
     <h1>DCC138 Exemplo01</h1>
     <canvas></canvas>
     <p>por Sávio Ribeiro</p>
     <script>
-      let canvas = document.querySelector("canvas");
-      let ctx = canvas.getContext("2d");
+        let canvas = document.querySelector("canvas");
+        let ctx = canvas.getContext("2d");
 
-      canvas.width = 480;
-      canvas.height = 320;
-      let x = 100;
-      let vx = 0;
-      let y = 100;
-      let vy = 0;
-      const V = 180;
-      let t0;
-      let dt;
-      requestAnimationFrame(desenha);
-
-      function desenha(t) {
-        t0 = t0 ?? t;
-        dt = (t - t0) / 1000;
-
-        //Desenha Fundo
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        //atualiza dinâmica dos  estado
-        x = x + vx * dt;
-        y = y + vy * dt;
-
-        //Desenha elementos
-        ctx.fillStyle = "white";
-        ctx.fillRect(x, y, 20, 20);
-
+        canvas.width = 480;
+        canvas.height = 320;
+        let x = 100;
+        let vx = 0;
+        let ax = 0;
+        let y = 100;
+        let vy = 0;
+        let ay = 0;
+        const K = 180;
+        let t0;
+        let dt;
         requestAnimationFrame(desenha);
 
-        t0 = t;
-      }
+        function desenha(t) {
+            t0 = t0 ?? t;
+            dt = (t - t0) / 1000;
 
-      addEventListener("keydown", teclaPressionada);
-      addEventListener("keyup", teclaSolta);
+            //Desenha Fundo
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      function teclaPressionada(e) {
-        //Adiciona controle de velocidades
-        console.log(e.key);
-        switch (e.key) {
-          case "ArrowUp":
-            vy = -V;
-            break;
+            //atualiza dinâmica dos  estado
+            vx = vx + ax * dt;
+            x = x + vx * dt;
+            vy = vy + ay * dt;
+            y = y + vy * dt;
 
-          case "ArrowDown":
-            vy = +V;
-            break;
-          case "ArrowLeft":
-            vx = -V;
-            break;
+            //Desenha elementos
+            ctx.fillStyle = "white";
+            ctx.fillRect(x, y, 20, 20);
 
-          case "ArrowRight":
-            vx = +V;
-            break;
+            requestAnimationFrame(desenha);
+
+            t0 = t;
         }
-      }
 
-      function teclaSolta(e) {
-        //Adiciona controle de velocidades
-        console.log(e.key);
-        switch (e.key) {
-          case "ArrowUp":
-            vy = 0;
-            break;
+        addEventListener("keydown", teclaPressionada);
+        addEventListener("keyup", teclaSolta);
 
-          case "ArrowDown":
-            vy = 0;
-            break;
-          case "ArrowLeft":
-            vx = 0;
-            break;
+        function teclaPressionada(e) {
+            //Adiciona controle de velocidades
+            console.log(e.key);
+            switch (e.key) {
+                case "ArrowUp":
+                    ay = -K;
+                    break;
 
-          case "ArrowRight":
-            vx = 0;
-            break;
+                case "ArrowDown":
+                    ay = +K;
+                    break;
+                case "ArrowLeft":
+                    ax = -K;
+                    break;
+
+                case "ArrowRight":
+                    ax = +K;
+                    break;
+            }
         }
-      }
+
+        function teclaSolta(e) {
+            //Adiciona controle de velocidades
+            console.log(e.key);
+            switch (e.key) {
+                case "ArrowUp":
+                    vy = 0;
+                    ay = 0;
+                    break;
+
+                case "ArrowDown":
+                    vy = 0;
+                    ay = 0;
+                    break;
+                case "ArrowLeft":
+                    vx = 0;
+                    ax = 0;
+                    break;
+
+                case "ArrowRight":
+                    vx = 0;
+                    ax = 0;
+                    break;
+            }
+        }
     </script>
-  </body>
+</body>
+
 </html>
